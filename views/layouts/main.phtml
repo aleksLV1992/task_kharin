@@ -1,0 +1,27 @@
+<?php
+
+?>
+
+<!DOCTYPE html>
+<html lang="En">
+<head>
+    <?= $script; ?>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="wrap">
+    <div class="container text-right">
+        <?php if($user === false):?>
+            <a class="btn btn-link" href="/site/login">Bход</a>
+        <?php else:?>
+            Вы вошли как:<?= $user->user_name; ?><a class="btn btn-link" href="/site/logout">Выход</a>
+        <?php endif;?>
+    </div>
+    <div class="container">
+        <?= $content ?>
+    </div>
+</div>
+</body>
+</html>
+

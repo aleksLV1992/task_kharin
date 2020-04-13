@@ -1,0 +1,14 @@
+div.table-custom .row{
+    padding: 3px 5px;
+}
+div.table-custom > :not(:first-child) {
+    border-top: 1px solid #dee2e6;
+}
+@media (max-width: 767px) {
+    div.table-custom .row {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin: 5px;
+    }
+
+}

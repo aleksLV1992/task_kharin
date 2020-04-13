@@ -1,0 +1,95 @@
+<?php
+$title = "Список Задач";
+
+?>
+<div>
+    <div class="form-group mt-2">
+        <div class="group-btn">
+            <a class="btn btn-primary" href="/site/add-task">Добавить задачу</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <h2 class="text-center"><?= $title; ?></h2>
+        <div class="row">
+            <?php $c = ceil((intval($count[0]['countTask']) / intval($countPage))); ?>
+            <div class="col-12 col-lg-6">
+                Показано:
+                c <?= (intval($page) - 1) * intval($countPage) + 1; ?>
+                по <?= (intval($page)) * intval($countPage) < intval($count[0]['countTask']) ? (intval($page)) * intval($countPage) : intval($count[0]['countTask']); ?>
+                из <?= intval($count[0]['countTask']); ?>
+            </div>
+            <div class="col-12 col-lg-6">
+                <select class="form-control" id="orderBy"
+                        onchange="document.location='/site/index?orderby='+this.options[this.selectedIndex].value+'&page=<?= $page; ?>'">
+                    <option disabled <?= empty($order) ? "selected" : "" ?>>Сортировка:</option>
+                    <?php foreach ($orderList as $value): ?>
+                        <option value="<?= $value['value'] ?>"
+                                <?= $value['value'] === $order ? "selected" : "" ?>><?= $value['label']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="group-form">
+        <?php if (isset($task)): ?>
+            <?php if (is_array($task) && count($task) !== 0): ?>
+                <div class="form-group table-custom">
+                    <div class="row font-weight-bold d-none d-lg-flex">
+                        <span class="col-12 col-lg-3">Имя пользователя</span>
+                        <span class="col-12 col-lg-2">Email</span>
+                        <span class="col-12 col-lg-3">Задача</span>
+                        <span class="col-12 col-lg-2">Статус</span>
+                        <span class="col-12 col-lg-2"></span>
+                    </div>
+                    <?php foreach ($task as $key => $value): ?>
+                        <div class="row">
+                            <span class="col-12 col-lg-3"><span class="font-weight-bold d-flex d-lg-none">Имя пользователя: </span><?= $value['user_name']; ?></span>
+                            <span class="col-12 col-lg-2"><span
+                                        class="font-weight-bold d-flex d-lg-none">Email: </span><?= $value['email']; ?></span>
+                            <span class="col-12 col-lg-3"><span
+                                        class="font-weight-bold d-flex d-lg-none">Задача: </span><?= $value['text']; ?></span>
+                            <span class="col-12 col-lg-2"><span
+                                        class="font-weight-bold d-flex d-lg-none">Статус: </span><?= $value['role_label']; ?>
+                                <?php if (!empty($value['comment'])): ?>
+                                    <span class="badge badge-info"><?= $value['comment']; ?></span>
+                                <? endif; ?>
+                            </span>
+                            <span class="col-12 col-lg-2">
+                                 <?php if (!empty($user)): ?>
+                                     <a href="/site/update-task?id=<?= $value['id']; ?>" class="btn btn-link">Редактировать</a>
+                                 <?php endif; ?>
+                            </span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php $uri = "/site/index?" . (empty($order) ? "" : "orderby={$order}&") . "page="; ?>
+                <?php if ($c > 1): ?>
+                    <div class="form-group">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <?php if (intval($page) !== 1): ?>
+                                    <li class="page-item"><a class="page-link"
+                                                             href="<?= $uri . (intval($page) - 1) ?>"><-</a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php for ($i = 1; $i <= $c; $i++) { ?>
+                                    <li class="page-item"><a class="page-link"
+                                                             href="<?= $uri . $i ?>"><?= $i ?></a></li>
+                                <?php } ?>
+                                <?php if (intval($page) < $c): ?>
+                                    <li class=" page-item"><a class="page-link"
+                                                              href="<?= $uri . (intval($page) + 1) ?>">-></a>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </nav>
+                    </div>
+                <?php endif; ?>
+            <?php else: ?>
+                <div class="alert alert-warning">
+                    Нет ни одной задачи
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
+</div>
