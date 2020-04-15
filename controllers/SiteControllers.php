@@ -133,42 +133,42 @@ class SiteControllers extends Controllers
      */
     public function actionUpdateTask()
     {
-        if (Site::GetUser() === false) {
-            $this->redirect("/site/login");
-        }
-        /**
-         * Провека есть ли данные в БД по полученному id
-         */
-        $id = null;
-        if (isset($_GET['id']) && !empty($_GET['id']))
-            $id = $_GET['id'];
-        if (isset($_POST['id']) && !empty($_POST['id']))
-            $id = $_POST['id'];
-        $task = null;
-        $model = new \models\Task();
-        $statusList = [];
-        if (!empty($id)) {
-            $task = $model::getTaskID($id);
 
-            $model->Loading($task);
-            $status = new models\TaskStatus();
-            $statusList = $status::getStatusTask();
-            if (isset($_POST['text'])) {
-                /**
-                 * Update
-                 */
-                $model->Loading($_POST);
-                if ($model->valid()) {
-                    $model->update();
+        if (Site::GetUser() !== false) {
+
+            /**
+             * Провека есть ли данные в БД по полученному id
+             */
+            $id = null;
+            if (isset($_GET['id']) && !empty($_GET['id']))
+                $id = $_GET['id'];
+            if (isset($_POST['id']) && !empty($_POST['id']))
+                $id = $_POST['id'];
+            $task = null;
+            $model = new \models\Task();
+            $statusList = [];
+            if (!empty($id)) {
+                $task = $model::getTaskID($id);
+
+                $model->Loading($task);
+                $status = new models\TaskStatus();
+                $statusList = $status::getStatusTask();
+                if (isset($_POST['text'])) {
+                    /**
+                     * Update
+                     */
+                    $model->Loading($_POST);
+                    if ($model->valid()) {
+                        $model->update();
+                    }
+                }
+                if (!empty($model)) {
+                    return $this->render('add-task', ['model' => $model, 'error' => $model->errorList, 'success' => $model->successList, 'update' => true, 'statusList' => $statusList]);
                 }
             }
-            if (!empty($model)) {
-                return $this->render('add-task', ['model' => $model, 'error' => $model->errorList, 'success' => $model->successList, 'update' => true, 'statusList' => $statusList]);
-            }
         }
 
-        $this->redirect("/");
-
+        return $this->redirect("/site/login");
     }
 
 

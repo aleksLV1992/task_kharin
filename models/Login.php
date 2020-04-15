@@ -55,8 +55,7 @@ class Login extends Models
         $stmt = \vendor\Site::$db->prepare("SELECT * FROM {$table} WHERE user_name = :u");
         $stmt->execute([':u' => $login]);
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
-/*        if (count($user) > 0)
-            return $user[0];*/
+
         return $user;
     }
 

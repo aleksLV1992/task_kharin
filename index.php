@@ -6,4 +6,4 @@ use vendor\Site as Site;
 Site::GetInstance();
 Site::Loading();
 
-?>
+
